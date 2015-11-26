@@ -64,6 +64,14 @@ module.exports = function(grunt) {
         series.push(function(callback) {
           // Fail when image would be upscaled unless explicitly allowed
           gm(filepath).size(function(err, size) {
+            if(/^\d+%$/.test(originalOptions.width) === true) {
+              originalOptions.width = size.width * (parseInt(originalOptions.width) / 100);
+            }
+
+            if(/^\d+%$/.test(originalOptions.height) === true) {
+              originalOptions.height = size.height * (parseInt(originalOptions.height) / 100);
+            }
+
             if (!options.upscale &&
               ((originalOptions.width && size.width < originalOptions.width) ||
               (originalOptions.height && size.height < originalOptions.height))) {
